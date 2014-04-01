@@ -31,7 +31,6 @@ import org.jivesoftware.resource.SparkRes;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.spark.ChatManager;
 import org.jivesoftware.spark.SparkManager;
-import org.jivesoftware.spark.component.RolloverButton;
 import org.jivesoftware.spark.ui.ChatRoom;
 import org.jivesoftware.spark.ui.rooms.ChatRoomImpl;
 import org.jivesoftware.spark.util.SwingTimerTask;

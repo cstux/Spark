@@ -28,14 +28,12 @@ import java.util.Vector;
 
 import javax.media.CaptureDeviceInfo;
 import javax.media.CaptureDeviceManager;
-import javax.media.Format;
 import javax.media.MediaLocator;
 import javax.media.format.AudioFormat;
 import javax.media.rtp.ReceiveStreamListener;
 
 import org.jitsi.impl.neomedia.MediaUtils;
 import org.jitsi.impl.neomedia.device.AudioMediaDeviceImpl;
-import org.jitsi.impl.neomedia.device.MediaDeviceImpl;
 import org.jitsi.service.libjitsi.LibJitsi;
 import org.jitsi.service.neomedia.DefaultStreamConnector;
 import org.jitsi.service.neomedia.MediaDirection;

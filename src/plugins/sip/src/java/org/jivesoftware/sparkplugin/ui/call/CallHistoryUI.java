@@ -67,6 +67,7 @@ import org.jivesoftware.spark.util.ModelUtil;
 import org.jivesoftware.sparkplugin.callhistory.HistoryCall;
 import org.jivesoftware.sparkplugin.calllog.CallLog;
 import org.jivesoftware.sparkplugin.calllog.LogManager;
+import org.jivesoftware.sparkplugin.ui.call.CallHistoryUI.CallEntry;
 
 /**
  *
@@ -83,7 +84,7 @@ public class CallHistoryUI extends JPanel implements ActionListener, ListSelecti
     private RolloverButton deleteButton;
 
     private JXList activeList;
-    private DefaultListModel model;
+    private DefaultListModel<CallEntry> model;
 
     private CallHistoryRenderer renderer;
 
@@ -105,7 +106,7 @@ public class CallHistoryUI extends JPanel implements ActionListener, ListSelecti
         List<HistoryCall> calls = new ArrayList<HistoryCall>(logManager.getCallHistory());
         Collections.sort(calls, itemComparator);
    
-        model = new DefaultListModel();
+        model = new DefaultListModel<CallEntry>();
         for (HistoryCall call : calls) {
             final CallEntry callEntry = new CallEntry(call);
             model.addElement(callEntry);
