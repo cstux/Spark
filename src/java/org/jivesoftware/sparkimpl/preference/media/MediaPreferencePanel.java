@@ -163,8 +163,11 @@ public class MediaPreferencePanel  extends JPanel {
 			System.out.println(mediaService);		
 		
 			MediaDevice device = mediaService.getDefaultDevice(mediaType, MediaUseCase.CALL);
+			if (device != null)
+			{
 			System.out.println(device.getDirection());
-			System.err.println("Device: " + device);
+			}
+	        System.err.println("Device: " + device);
 			System.err.println("================================");
 		}
 
@@ -185,8 +188,9 @@ public class MediaPreferencePanel  extends JPanel {
 		videoDevice.addItem("<None>");	
 		
 		AudioSystem mediaAudioSystem = ((MediaServiceImpl)LibJitsi.getMediaService()).getDeviceConfiguration().getAudioSystem();
-		for (AudioSystem system : mediaAudioSystem.getAudioSystems())
+		for (AudioSystem system : AudioSystem.getAudioSystems())
 		{
+		    System.out.println(system);
 			vectorAudioSystem.add(system);
 			audioSystem.addItem(system);
 		}
