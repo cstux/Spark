@@ -72,7 +72,7 @@ public class AudioFormatUtils {
 		case RTPBonusFormatsMgr.SPEEX_RTP_INDEX: // 110
 			System.out.println("SDPFormat SPEEX_RTP_INDEX: " + sdpFormat);
 
-			return mediaService.getFormatFactory().createMediaFormat("SPEEX",
+			return mediaService.getFormatFactory().createMediaFormat("speex/8000",
 					8000);
 		case SdpConstants.H263:
 			return mediaService.getFormatFactory().createMediaFormat("H263",
