@@ -22,7 +22,6 @@ package net.java.sipmack.media;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -33,12 +32,8 @@ import java.util.Vector;
 
 import javax.media.CaptureDeviceInfo;
 import javax.media.CaptureDeviceManager;
-import javax.media.ControllerClosedEvent;
-import javax.media.ControllerEvent;
-import javax.media.ControllerListener;
 import javax.media.Format;
 import javax.media.MediaLocator;
-import javax.media.Processor;
 import javax.media.format.VideoFormat;
 import javax.media.rtp.ReceiveStreamListener;
 import javax.media.rtp.SendStream;
@@ -110,19 +105,33 @@ public class VideoChannel {
     
     public synchronized void checkVideo()
     {
-        JPanel visualComponent = new JPanel( new BorderLayout() );
-    	VideoMediaStream vms = ((VideoMediaStream) mediaStream);
-    	visualComponent.setBackground(Color.BLACK);
-    	for( Component c : vms.getVisualComponents() ) {
-        	VideoContainer vc = new VideoContainer(c,true);
-            visualComponent.add(vc); 
-    	}
-    	    	
-    	frame = new JFrame("Frame");
-    	frame.setSize(640, 480);
-    	frame.add(visualComponent);
-    	frame.setVisible(true);
+        if (frame == null)
+        {
+            JPanel visualComponent = new JPanel( new BorderLayout() );
+        	VideoMediaStream vms = ((VideoMediaStream) mediaStream);
+        	visualComponent.setBackground(Color.BLACK);
+        	for( Component c : vms.getVisualComponents() ) {
+            	VideoContainer vc = new VideoContainer(c,true);
+                visualComponent.add(vc); 
+        	}
+            System.out.println("VMS: " + vms);
+            System.out.println("VMS: " + vms.getName());
+        	frame = new VideoFrame("Frame");
+        	frame.setSize(640, 480);
+        	frame.add(visualComponent);
+        	frame.setVisible(true);
+        }
     }
+    
+    public class VideoFrame extends JFrame
+    {
+        private static final long serialVersionUID = -3359422087122668632L;
+        public VideoFrame(String name)
+        {
+            super(name);
+        }
+    }
+    
 
     /**
      * Starts the transmission. Returns null if transmission started ok.
@@ -132,11 +141,23 @@ public class VideoChannel {
     public synchronized String start() {
     	try {
 	    	MediaService mediaService = LibJitsi.getMediaService();
-	        MediaDevice device = mediaService.getDefaultDevice(MediaType.VIDEO, MediaUseCase.ANY);
- 	
+	        MediaDevice device = null;
 	        
-	        System.out.println("Device:" + device);
+	        List<MediaDevice> devices = mediaService.getDevices(MediaType.VIDEO, MediaUseCase.ANY);
+            for (MediaDevice foundDevice : devices)
+            {
+                if (foundDevice instanceof MediaDeviceImpl)
+                {
+                    MediaDeviceImpl amdi = (MediaDeviceImpl) foundDevice;
+                    if(locator.equals(amdi.getCaptureDeviceInfo().getLocator()))
+                    {
+                        System.out.println("Test" + locator + "-" + amdi.getCaptureDeviceInfo().getLocator());
+                        device = foundDevice;
+                    }
+                }
+            }
 	        
+	        System.out.println("Device:" + device);        
 	        
 	        mediaStream = mediaService.createMediaStream(device);
 	        mediaStream.setDirection(MediaDirection.SENDRECV);
@@ -177,7 +198,6 @@ public class VideoChannel {
 	        	
 	        });
 	        mediaStream.start();
-
     	}
     	catch (Exception e)
     	{
