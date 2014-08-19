@@ -33,7 +33,6 @@ import javax.media.CaptureDeviceInfo;
 import javax.media.CaptureDeviceManager;
 import javax.media.Format;
 import javax.media.format.AudioFormat;
-import javax.media.format.VideoFormat;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -42,6 +41,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.jitsi.impl.neomedia.MediaServiceImpl;
+import org.jitsi.impl.neomedia.codec.video.AVFrameFormat;
 import org.jitsi.impl.neomedia.device.AudioSystem;
 import org.jitsi.impl.neomedia.device.AudioSystem.DataFlow;
 import org.jitsi.impl.neomedia.device.CaptureDeviceInfo2;
@@ -165,7 +165,7 @@ public class MediaPreferencePanel  extends JPanel {
 			MediaDevice device = mediaService.getDefaultDevice(mediaType, MediaUseCase.CALL);
 			if (device != null)
 			{
-			System.out.println(device.getDirection());
+			    System.out.println(device.getDirection());
 			}
 	        System.err.println("Device: " + device);
 			System.err.println("================================");
@@ -179,7 +179,7 @@ public class MediaPreferencePanel  extends JPanel {
 			audioDevice.addItem("[" + protocol + "]" + convertSysString(infoCaptureDevice.getName()));
 		}
 		
-		vectorVideoDevices = CaptureDeviceManager.getDeviceList(new VideoFormat(VideoFormat.RGB));
+		vectorVideoDevices = CaptureDeviceManager.getDeviceList(new AVFrameFormat());
 		for (  CaptureDeviceInfo infoCaptureDevice : vectorVideoDevices )
 		{
             videoDevice.addItem(convertSysString(infoCaptureDevice.getName()));		
