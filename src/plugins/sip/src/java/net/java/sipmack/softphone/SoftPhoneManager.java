@@ -458,6 +458,11 @@ public class SoftPhoneManager implements CommunicationsListener, CallListener, U
         if (audioMediaSession != null) {
             audioMediaSession.close();
         }
+        VideoMediaSession videoMediaSession = evt.getSourceCall().getVideoMediaSession();
+        if (videoMediaSession != null) {
+            videoMediaSession.stopTrasmit();
+            videoMediaSession.stopReceive();
+        }
     }
 
     /**
@@ -667,6 +672,11 @@ public class SoftPhoneManager implements CommunicationsListener, CallListener, U
                         audioMediaSession.stopTrasmit();
                         audioMediaSession.stopReceive();
                     }
+                    VideoMediaSession videoMediaSession = evt.getSourceCall().getVideoMediaSession();
+                    if (videoMediaSession != null) {
+                        videoMediaSession.stopTrasmit();
+                        videoMediaSession.stopReceive();
+                    }
                     PhoneManager.setUsingMediaLocator(false);
                 }
 
@@ -739,7 +749,11 @@ public class SoftPhoneManager implements CommunicationsListener, CallListener, U
                 }
                 if (call.getAudioReceiverChannel() != null)
                     call.getAudioReceiverChannel().stop();
-
+                VideoMediaSession videoMediaSession = evt.getSourceCall().getVideoMediaSession();
+                if (videoMediaSession != null) {
+                    videoMediaSession.stopTrasmit();
+                    videoMediaSession.stopReceive();
+                }
                 PhoneManager.setUsingMediaLocator(false);
 
             } else if (evt.getNewState() == Call.FAILED) {

@@ -39,6 +39,7 @@ import javax.sip.message.Request;
 import net.java.sipmack.common.Log;
 import net.java.sipmack.media.AudioMediaSession;
 import net.java.sipmack.media.AudioReceiverChannel;
+import net.java.sipmack.media.VideoMediaSession;
 import net.java.sipmack.sip.event.CallListener;
 import net.java.sipmack.sip.event.CallStateEvent;
 
@@ -84,6 +85,8 @@ public class Call implements ReceiveStreamListener {
     private boolean holdMic = false;
 
     private AudioMediaSession audioMediaSession = null;
+
+    private VideoMediaSession videoMediaSession = null;
 
     private AudioReceiverChannel audioReceiverChannel = null;
 
@@ -338,6 +341,14 @@ public class Call implements ReceiveStreamListener {
         this.audioMediaSession = audioMediaSession;
     }
 
+    public VideoMediaSession getVideoMediaSession() {
+        return videoMediaSession;
+    }
+
+    public void setVideoMediaSession(VideoMediaSession audioMediaSession) {
+        this.videoMediaSession = audioMediaSession;
+    }
+    
     // ====================== RECEIVE STREAMS EVENTS ==========================
 
     public void update(ReceiveStreamEvent receiveStreamEvent) {
