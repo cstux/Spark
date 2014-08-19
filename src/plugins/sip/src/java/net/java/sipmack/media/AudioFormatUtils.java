@@ -70,13 +70,15 @@ public class AudioFormatUtils {
 			return mediaService.getFormatFactory().createMediaFormat(
 					AudioFormat.G729, 8000);
 		case RTPBonusFormatsMgr.SPEEX_RTP_INDEX: // 110
-			System.out.println("SDPFormat SPEEX_RTP_INDEX: " + sdpFormat);
-
+			System.out.println("SDPFormat SPEEX_RTP_INDEX: " + sdpFormat);		
 			return mediaService.getFormatFactory().createMediaFormat("speex/8000",
 					8000);
 		case SdpConstants.H263:
 			return mediaService.getFormatFactory().createMediaFormat("H263",
 					MediaFormatFactory.CLOCK_RATE_NOT_SPECIFIED);
+        case 99:
+            return mediaService.getFormatFactory().createMediaFormat("H264",
+                    MediaFormatFactory.CLOCK_RATE_NOT_SPECIFIED);			
 		case SdpConstants.JPEG:
 			return mediaService.getFormatFactory().createMediaFormat("JPEG",
 					MediaFormatFactory.CLOCK_RATE_NOT_SPECIFIED);
@@ -116,6 +118,8 @@ public class AudioFormatUtils {
 			return Integer.toString(RTPBonusFormatsMgr.ILBC_RTP_INDEX);
 		} else if (jmfFormat.equals(VideoFormat.H263_RTP)) {
 			return Integer.toString(SdpConstants.H263);
+	    } else if (jmfFormat.equals(Constants.H264_RTP)) {
+	        return Integer.toString(99);
 		} else if (jmfFormat.equals(VideoFormat.JPEG_RTP)) {
 			return Integer.toString(SdpConstants.JPEG);
 		} else if (jmfFormat.equals(VideoFormat.H261_RTP)) {

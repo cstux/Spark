@@ -94,9 +94,6 @@ public class JmfMediaManager {
      * Setup API supported AudioFormats
      */
     private void setupAudioFormats() {
-    	
-  
-    	
         audioFormats.add(new AudioFormat(Constants.SPEEX_RTP));
         audioFormats.add(new AudioFormat(Constants.ALAW_RTP));
         audioFormats.add(new AudioFormat(AudioFormat.ULAW_RTP));
@@ -110,6 +107,7 @@ public class JmfMediaManager {
     private void setupVideoFormats() {
     	videoFormats.add(new VideoFormat(VideoFormat.H261_RTP));
     	videoFormats.add(new VideoFormat(VideoFormat.H263_RTP));
+    	videoFormats.add(new VideoFormat(Constants.H264_RTP));
     }
     
     /**
@@ -270,6 +268,7 @@ public class JmfMediaManager {
                 else
                     localPorts.add(Integer.valueOf(mediaPort));
 
+                System.out.println("==> SDP FORMATS: "+ sdpFormats);
                 formatSets.add(extractTransmittableJmfFormats(sdpFormats));
             }
             catch (MediaException ex) {
@@ -517,6 +516,13 @@ public class JmfMediaManager {
       	        		 MediaFormatFactory.CLOCK_RATE_NOT_SPECIFIED);
     			jmfFormats.add(videoformat);   
     		}
+    		else if (Integer.parseInt((String)sdpFormats.get(0)) == 34) 
+            {
+                MediaFormat videoformat = LibJitsi.getMediaService().getFormatFactory().createMediaFormat(
+                        "H263",
+                         MediaFormatFactory.CLOCK_RATE_NOT_SPECIFIED);
+                jmfFormats.add(videoformat);   
+            }
         	MediaFormat mediaFormat = AudioFormatUtils.findCorrespondingJmfFormat(sdpFormats
                     .elementAt(i).toString());
         	System.out.println("mediaFormat" + mediaFormat + "-" + sdpFormats.elementAt(i).toString());
