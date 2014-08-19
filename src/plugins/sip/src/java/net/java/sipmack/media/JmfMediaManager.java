@@ -462,6 +462,9 @@ public class JmfMediaManager {
 
 
             MediaFormat mediaFormat = (formatSets.get(0)).get(0);
+            
+            System.out.println("mediaFormat: " + mediaFormat);
+            
 //            System.out.println("MediaFormat: " + format);
 //            System.out.println("MediaFormat: " + format.getRTPPayloadType());
 //            System.out.println("MediaFormat: " + format.getMediaType());
@@ -502,12 +505,13 @@ public class JmfMediaManager {
     protected ArrayList<MediaFormat> extractTransmittableJmfFormats(Vector<?> sdpFormats)
             throws MediaException {
         ArrayList<MediaFormat> jmfFormats = new ArrayList<MediaFormat>();
+        
         for (int i = 0; i < sdpFormats.size(); i++) {
     		System.out.println("Add1 ++++++++++++++++++" + sdpFormats);
+            System.out.println("Add1 Format" + sdpFormats.get(0));
 
-    		if (Integer.parseInt((String)sdpFormats.get(0)) == 31) 
+    		if (Integer.parseInt((String)sdpFormats.get(0)) == 99) 
     		{
-        		System.out.println(sdpFormats.get(0));
     			MediaFormat videoformat = LibJitsi.getMediaService().getFormatFactory().createMediaFormat(
       	        		"H264",
       	        		 MediaFormatFactory.CLOCK_RATE_NOT_SPECIFIED);
@@ -515,6 +519,7 @@ public class JmfMediaManager {
     		}
         	MediaFormat mediaFormat = AudioFormatUtils.findCorrespondingJmfFormat(sdpFormats
                     .elementAt(i).toString());
+        	System.out.println("mediaFormat" + mediaFormat + "-" + sdpFormats.elementAt(i).toString());
             if (mediaFormat != null) {
         		System.out.println("Add2 ++++++++++++++++++" + mediaFormat);
                 jmfFormats.add(mediaFormat);     
