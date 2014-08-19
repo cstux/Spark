@@ -79,8 +79,8 @@ public class VideoChannel {
     private StreamConnector connector;
     private List<SendStream> sendStreams = new ArrayList<SendStream>();
     private List<ReceiveStreamListener> receiveListeners = new ArrayList<ReceiveStreamListener>();
-    MediaStream mediaStream = null;
-    
+    private MediaStream mediaStream = null;
+    private JFrame frame = null;
     /**
      * Creates an Audio Channel for a desired jmf locator. For instance: new MediaLocator("dsound://")
      *
@@ -118,7 +118,7 @@ public class VideoChannel {
             visualComponent.add(vc); 
     	}
     	    	
-    	JFrame frame = new JFrame("Frame");
+    	frame = new JFrame("Frame");
     	frame.setSize(640, 480);
     	frame.add(visualComponent);
     	frame.setVisible(true);
@@ -134,6 +134,10 @@ public class VideoChannel {
 	    	MediaService mediaService = LibJitsi.getMediaService();
 	        MediaDevice device = mediaService.getDefaultDevice(MediaType.VIDEO, MediaUseCase.ANY);
  	
+	        
+	        System.out.println("Device:" + device);
+	        
+	        
 	        mediaStream = mediaService.createMediaStream(device);
 	        mediaStream.setDirection(MediaDirection.SENDRECV);
 	  
@@ -223,7 +227,11 @@ public class VideoChannel {
 	    	mediaStream.close();
 	    	mediaStream = null;	    	
     	}
-    	
+    	if (frame != null)
+    	{
+    	    frame.dispose();
+    	    frame = null;
+    	}
     	remevoAllReceiverListener();
     }
 
