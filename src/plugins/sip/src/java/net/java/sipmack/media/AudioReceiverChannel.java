@@ -22,11 +22,14 @@ package net.java.sipmack.media;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.util.List;
 
+import javax.media.MediaLocator;
 import javax.media.control.BufferControl;
 import javax.media.rtp.RTPManager;
 import javax.media.rtp.SessionAddress;
 
+import org.jitsi.impl.neomedia.device.AudioMediaDeviceImpl;
 import org.jitsi.service.libjitsi.LibJitsi;
 import org.jitsi.service.neomedia.DefaultStreamConnector;
 import org.jitsi.service.neomedia.MediaDirection;
@@ -65,10 +68,9 @@ public class AudioReceiverChannel {
     private int localPort;
     private String remoteIpAddress;
     private int remotePort;
-
-    private RTPManager rtpMgrs[];
-    private AudioReceiver audioReceiver;
-
+    private MediaLocator inLocator;
+    private MediaStream mediaStream;
+    
     private boolean started = false;
 
     /**
@@ -82,10 +84,13 @@ public class AudioReceiverChannel {
                                 String remoteIpAddress,
                                 int remotePort,
                                 int remoteRTCPPort) {
+        this.inLocator = inLocator;
         this.localIpAddress = localIpAddress;
         this.localPort = localPort;
         this.remoteIpAddress = remoteIpAddress;
         this.remotePort = remotePort;
+        System.out.println("AudioReceiverChannel");
+
     }
 
     /**
@@ -96,23 +101,39 @@ public class AudioReceiverChannel {
     public synchronized String start() {
     	try
     	{
-    	System.out.println("REcviert start");
-    	MediaService mediaService = LibJitsi.getMediaService();
-        MediaDevice device = mediaService.getDefaultDevice(MediaType.AUDIO, MediaUseCase.CALL);
-        MediaStream mediaStream = mediaService.createMediaStream(device);
-        mediaStream.setDirection(MediaDirection.RECVONLY);
-        MediaFormat format = mediaService.getFormatFactory().createMediaFormat(
-        		"PCMU",
-        		 8000);
-        mediaStream.setFormat(format);
-        StreamConnector connector = new DefaultStreamConnector(new DatagramSocket(this.localPort),new DatagramSocket(this.localPort + 1));
-        mediaStream.setConnector(connector);
-        mediaStream.setTarget(
-                new MediaStreamTarget(
-                        new InetSocketAddress(this.remoteIpAddress, this.remotePort),
-                        new InetSocketAddress(this.remoteIpAddress, this.remotePort+1)));
-        mediaStream.setName(MediaType.AUDIO.toString());
-        mediaStream.start();
+        	MediaService mediaService = LibJitsi.getMediaService();
+
+            MediaDevice device = null;
+            List<MediaDevice> devices = mediaService.getDevices(MediaType.AUDIO, MediaUseCase.CALL);
+            for (MediaDevice foundDevice : devices)
+            {
+                if (foundDevice instanceof AudioMediaDeviceImpl)
+                {
+                    AudioMediaDeviceImpl amdi = (AudioMediaDeviceImpl) foundDevice;
+                    if(inLocator == amdi.getCaptureDeviceInfo().getLocator())
+                    {
+                        System.out.println("Test" + inLocator + "-" + amdi.getCaptureDeviceInfo().getLocator());
+                        device = foundDevice;
+                    }
+                }
+                System.out.println(foundDevice.getClass() + "-" +  inLocator);
+            }
+        	
+            mediaStream = mediaService.createMediaStream(device);
+            mediaStream.setDirection(MediaDirection.RECVONLY);
+            System.out.println("TEST");
+            MediaFormat format = mediaService.getFormatFactory().createMediaFormat(
+            		"PCMA",
+            		 8000);
+            mediaStream.setFormat(format);
+            StreamConnector connector = new DefaultStreamConnector(new DatagramSocket(this.localPort),new DatagramSocket(this.localPort + 1));
+            mediaStream.setConnector(connector);
+            mediaStream.setTarget(
+                    new MediaStreamTarget(
+                            new InetSocketAddress(this.remoteIpAddress, this.remotePort),
+                            new InetSocketAddress(this.remoteIpAddress, this.remotePort+1)));
+            mediaStream.setName(MediaType.AUDIO.toString());
+            mediaStream.start();
     	}
     	catch (Exception e)
     	{
@@ -126,7 +147,7 @@ public class AudioReceiverChannel {
      * Stops the receiver also.
      */
     public void stop() {
-
+        mediaStream.stop();
     }
 
  

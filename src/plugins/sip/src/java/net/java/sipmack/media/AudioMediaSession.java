@@ -133,7 +133,7 @@ public class AudioMediaSession {
             localPort = this.getLocal().getPort();
             remotePort = this.getRemote().getPort();
         }
-        System.out.println(this.getLocal().getConnection() + " " + ip + ": " + localPort + "->" + remotePort);
+        System.out.println(this.getLocal().getConnection() + " " + ip + ": " + localPort + "->" + remotePort + "-" + audioFormat);
 
         System.out.println("1----> AudioChannel");
         audioChannel = new AudioChannel(PhoneManager.getMediaLocator(locator), localIp, ip, localPort,-1,  remotePort, -1, audioFormat);

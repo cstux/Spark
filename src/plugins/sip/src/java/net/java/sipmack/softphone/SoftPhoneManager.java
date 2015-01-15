@@ -690,7 +690,6 @@ public class SoftPhoneManager implements CommunicationsListener, CallListener, U
                 		localAudioPort = mediaDescription.getMedia().getMediaPort();
                 	else if (mediaDescription.getMedia().getMediaType().equals("video"))
                 		localVideoPort = mediaDescription.getMedia().getMediaPort();
-
                 }
                 
                 

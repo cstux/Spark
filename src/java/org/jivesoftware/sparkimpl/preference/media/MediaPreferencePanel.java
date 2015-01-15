@@ -47,7 +47,6 @@ import org.jitsi.impl.neomedia.device.AudioSystem.DataFlow;
 import org.jitsi.impl.neomedia.device.CaptureDeviceInfo2;
 import org.jitsi.service.configuration.ConfigurationService;
 import org.jitsi.service.libjitsi.LibJitsi;
-import org.jitsi.service.neomedia.MediaService;
 import org.jitsi.service.neomedia.MediaType;
 import org.jitsi.service.neomedia.MediaUseCase;
 import org.jitsi.service.neomedia.device.MediaDevice;
@@ -155,7 +154,11 @@ public class MediaPreferencePanel  extends JPanel {
 		LibJitsi.start();
 		
 		MediaType[] mediaTypes = MediaType.values();
-		MediaService mediaService = LibJitsi.getMediaService();
+		MediaServiceImpl mediaService = (MediaServiceImpl) LibJitsi.getMediaService();
+		System.out.println("FPS:" + mediaService.getDeviceConfiguration().getFrameRate());
+		System.out.println("VideoBitrat" + mediaService.getDeviceConfiguration().getVideoBitrate());
+		//mediaService.getDeviceConfiguration().setFrameRate(15);
+		//mediaService.getDeviceConfiguration().setVideoBitrate(128);
 		for (MediaType mediaType : mediaTypes)
 		{
 			System.err.println("================================");
@@ -170,8 +173,7 @@ public class MediaPreferencePanel  extends JPanel {
 	        System.err.println("Device: " + device);
 			System.err.println("================================");
 		}
-
-		
+	
 		vectorAudioDevices = CaptureDeviceManager.getDeviceList(new AudioFormat(AudioFormat.LINEAR));	
 		for ( CaptureDeviceInfo infoCaptureDevice : vectorAudioDevices)
 		{			     
@@ -181,7 +183,7 @@ public class MediaPreferencePanel  extends JPanel {
 		
 		vectorVideoDevices = CaptureDeviceManager.getDeviceList(new AVFrameFormat());
 		for (  CaptureDeviceInfo infoCaptureDevice : vectorVideoDevices )
-		{
+		{		    
             videoDevice.addItem(convertSysString(infoCaptureDevice.getName()));		
 		}
 		vectorVideoDevices.add(null);
