@@ -54,6 +54,7 @@ import org.jitsi.service.neomedia.device.MediaDevice;
 import org.jivesoftware.Spark;
 import org.jivesoftware.resource.Res;
 import org.jivesoftware.spark.component.VerticalFlowLayout;
+import org.jivesoftware.spark.util.ResourceUtils;
 
 public class MediaPreferencePanel  extends JPanel {
     private static final long serialVersionUID = 8297469864676223072L;
@@ -119,10 +120,10 @@ public class MediaPreferencePanel  extends JPanel {
         panel.add(redetect,new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(10, 15, 5, 0), 0, 0));
     
         // Setup Mnemonics
-//        ResourceUtils.resButton(redetect, Res.getString("button.re.detect"));
-//        ResourceUtils.resLabel(lVideo, videoDevice, Res.getString("label.video.device") + ":");
-//        ResourceUtils.resLabel(lPlaybackAudio, playbackDevice, Res.getString("label.audio.device") + ":");
-//        ResourceUtils.resLabel(lAudio, audioDevice, Res.getString("label.audio.device") + ":");
+        ResourceUtils.resButton(redetect, Res.getString("button.re.detect"));
+        ResourceUtils.resLabel(lVideo, videoDevice, Res.getString("label.video.device") + ":");
+        ResourceUtils.resLabel(lPlaybackAudio, playbackDevice, Res.getString("label.audio.device") + ":");
+        ResourceUtils.resLabel(lAudio, audioDevice, Res.getString("label.audio.device") + ":");
 //        
         scanDevices();
         
